@@ -15,11 +15,3 @@ public static <T> List<List<T>> listSplit(List<T> list, int num) {
 }
 ```
 
-# List转数组
-
-```java
-public String[] listToArray(List<String> list){
-	return list.toArray(new String[0]);
-}
-```
-
