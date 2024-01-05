@@ -4,6 +4,51 @@
 import { utils, writeFile } from 'xlsx-js-style'
 ```
 
+### vue表格
+
+```vue
+<el-table
+	:data="tableData"
+	:span-method="objectSpanMethod"
+	v-loading="loading"
+	element-loading-text="拼命加载中"
+	element-loading-spinner="el-icon-loading"
+	element-loading-background="rgba(0, 0, 0, 0.8)"
+	height="560"
+	style="width: 100%;">
+	<el-table-column prop="number" label="编号" width="60">
+	</el-table-column>
+	<el-table-column prop="name" label="楼层" width="70">
+	</el-table-column>
+	<el-table-column prop="channelName" label="设备名称"> </el-table-column>
+	<el-table-column prop="location" label="安装位置">
+	</el-table-column>
+	<el-table-column prop="thisMonth" label="当月用电量">
+	</el-table-column>
+	<el-table-column prop="lastMonth" label="上月用电量">
+	</el-table-column>
+	<el-table-column prop="totalValue" label="楼层当月用电合计">
+	</el-table-column>
+	<el-table-column prop="remarks" label="备注">
+	</el-table-column>
+</el-table>
+```
+
+### 控制web界面显示合并单元格
+
+```js
+objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+	if (columnIndex === 0 || columnIndex === 1 || columnIndex === 6) {
+		const _row = this.spanArr[rowIndex];
+		const _col = _row > 0 ? 1 : 0;
+		return {
+			rowspan: _row, //行
+			colspan: _col //列
+		};
+	}
+}
+```
+
 ### 获取普通表格需要合并的数组
 
 ```js
