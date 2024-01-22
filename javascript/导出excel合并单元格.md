@@ -54,6 +54,9 @@ objectSpanMethod({ row, column, rowIndex, columnIndex }) {
 ```js
 //data是正常表格数据
 getSpanArr(data) {
+    if(data.length == 0){
+        return
+    }
 	this.spanArr = [];
 	for (var i = 0; i < data.length; i++) {
 		if (i === 0) {
