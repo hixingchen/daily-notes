@@ -1,0 +1,35 @@
+UPDATE ibms_channel_archives a
+RIGHT JOIN (
+	SELECT
+		a.* 
+	FROM
+		(
+		SELECT
+			a.id AS id,
+			spaceConfig.location_x AS x,
+			spaceConfig.location_y AS y,
+			channelArchives.id AS cameraId,
+			channelArchives.NAME AS cameraName,
+			spaceConfig2.location_x AS cameraX,
+			spaceConfig2.location_y AS cameraY,
+			POW( spaceConfig.location_x - spaceConfig2.location_x, 2 )+ POW( spaceConfig.location_y - spaceConfig2.location_y, 2 ) AS distance 
+		FROM
+			ibms_channel_archives a
+			LEFT JOIN ibms_space_config spaceConfig ON spaceConfig.obj_id = a.id
+			LEFT JOIN ibms_space_structure spaceStructure ON spaceStructure.id = spaceConfig.space_id
+			LEFT JOIN ibms_space_config spaceConfig2 ON spaceConfig2.space_id = spaceStructure.id
+			LEFT JOIN ibms_channel_archives channelArchives ON channelArchives.id = spaceConfig2.obj_id 
+		WHERE
+			a.del_flag = 0 
+			AND a.sys_type = 27 
+			AND channelArchives.sys_type = 13 
+			AND channelArchives.del_flag = 0 
+		HAVING
+			1 
+		ORDER BY
+			distance 
+		) a 
+	GROUP BY
+		a.id 
+	) b ON b.id = a.id 
+	SET a.peripheral_equipment = b.cameraId

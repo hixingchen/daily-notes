@@ -1,0 +1,34 @@
+SELECT
+	a.object_id AS "objectId",
+	a.account_id AS "accountId",
+	a.account_object AS "accountObject",
+	a.indicators_name AS "indicatorsName",
+	a.indicators_value AS "indicatorsValue",
+	DATE_FORMAT( a.collect_date, "%Y-%m-%d %H:%i:%S" ) AS "maxDate" 
+FROM
+	(
+	SELECT
+		object_id,
+		account_id,
+		account_object,
+		indicators_name,
+		indicators_value,
+		collect_date 
+	FROM
+		al_data_kpi_record 
+	WHERE
+		DATE_FORMAT( collect_date, '%Y-%m-%d' ) = DATE_FORMAT( '2021-06-16 00:03:59', '%Y-%m-%d' ) 
+		AND generate_tag != 1 
+		AND indicators_name != 'kpi_01_001' 
+		AND indicators_name != 'kpi_01_002' 
+	HAVING
+		1 
+	ORDER BY
+		collect_date DESC 
+	) a 
+GROUP BY
+	a.object_id,
+	a.account_id,
+	a.account_object,
+	a.indicators_name
+	
