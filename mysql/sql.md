@@ -46,3 +46,11 @@ WHERE
 	AND COLUMN_NAME not like '%_time'
 ```
 
+# 同步临时表与正式表数据
+
+```sql
+INSERT INTO carbon_record_month_all SELECT * FROM carbon_record_month_all_temp
+		ON DUPLICATE KEY
+		UPDATE carbon_specific_type = VALUES(carbon_specific_type)
+```
+
